@@ -17,12 +17,12 @@ public class ExcelUtils {
   public static Sheet sheet;
 
 
-  public static JSONObject readExcelToJSON (String filePath) {
+  public static JSONObject readExcelToJSON (String filePath, String sheetName) {
     JSONObject jsonObject = new JSONObject ();
 
     try (FileInputStream fis = new FileInputStream (filePath); Workbook workbook = new XSSFWorkbook (fis)) {
 
-      Sheet sheet = workbook.getSheetAt (0);
+      Sheet sheet = workbook.getSheet (sheetName);
       Iterator<Row> rows = sheet.iterator ();
       Row headerRow = rows.next (); // Assuming the first row is the header
       JSONArray columns = new JSONArray ();

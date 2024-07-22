@@ -6,6 +6,7 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.apache.commons.io.FileUtils;
 import org.demo.utility.ExcelUtils;
+import org.json.JSONObject;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -29,6 +30,7 @@ public class BaseTest {
   public static Properties properties;
   public static ExtentReports extentReports;
   public static ExtentTest extentTest;
+  public static JSONObject testData;
 
   public BaseTest () {
     try {
@@ -74,11 +76,13 @@ public class BaseTest {
         System.out.println ("Browser is invalid");
         break;
     }
+    driver.get (properties.getProperty ("url"));
     driver.manage ().window ().maximize ();
     Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities ();
     String device = capabilities.getBrowserName () + " " + capabilities.getBrowserVersion ().substring (0, capabilities.getBrowserVersion ().indexOf ("."));
     extentTest = extentReports.createTest (context.getName ());
     extentTest.assignDevice (device);
+    testData = ExcelUtils.readExcelToJSON (properties.getProperty ("testDataFile"), "testdata1");
   }
 
   @AfterTest
